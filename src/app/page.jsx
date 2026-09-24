@@ -1,8 +1,17 @@
-import Image from "next/image";
+import Hero from "@/components/Hero"
+import WorkoutGrid from "@/components/WorkoutGrid"
+import {getWorkouts} from "@/lib/api"
 
-export default function Home() {
+const page = async() => {
+  const workouts = await getWorkouts()
+  console.log(`workouts : ${workouts}`);
+  
   return (
-    <div>Hello</div>
-
-  );
+    <>
+    <Hero/>
+    <WorkoutGrid workouts={workouts}/>
+    </>
+  )
 }
+
+export default page
