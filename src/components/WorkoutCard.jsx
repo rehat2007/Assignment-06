@@ -1,10 +1,12 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 const WorkoutCard = ({ workout }) => {
   return (
+    <Link href={`/workouts/${workout.id}`}>
     <div
       className="
-        group w-full mx-auto max-w-98.5 overflow-hidden rounded-2xl
+        group w-full mx-auto max-w-98.5 overflow-hidden rounded-2xl cursor-pointer
         border border-[#2B3038] bg-[#15181E] text-white
         transition-all duration-300
         hover:-translate-y-1
@@ -113,6 +115,7 @@ const WorkoutCard = ({ workout }) => {
         </div>
       </div>
     </div>
+    </Link>
   )
 }
 
