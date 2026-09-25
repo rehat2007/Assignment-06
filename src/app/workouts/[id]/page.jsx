@@ -496,9 +496,6 @@ const page = async ({ params }) => {
                             grid-cols-1
                             gap-3
                             rounded-2xl
-                            border
-                            border-[#242933]
-                            bg-[#15181E]/60
                             p-5
                             sm:grid-cols-2
                             lg:grid-cols-3
