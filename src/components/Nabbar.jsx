@@ -1,6 +1,9 @@
+"use client"
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useContext } from "react"
+import { WorkoutContext } from '@/context/FitLogContext'
 
 
 function Nabbar() {
@@ -9,6 +12,8 @@ function Nabbar() {
         <p className="rounded-full bg-[#1A2312] px-5 py-2.5 text-sm font-semibold text-[#C2F800] shadow-inner shadow-[#C2F800]/5 transition-all duration-200"><Link href="/">Home</Link></p>
         <p className="rounded-full px-5 py-2.5 text-sm font-medium text-[#8A909B] transition-colors duration-200 hover:bg-[#1A1B1F] hover:text-white"><Link href="/plane">My Plan</Link></p>
     </>
+
+    const {workout, saveWorkout} = useContext(WorkoutContext)
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-[#1E1E1E] bg-[#0C0D10]/90 backdrop-blur-md">
@@ -29,21 +34,7 @@ function Nabbar() {
 
                 {/* Center Navigation */}
                 <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full  p-1 md:flex">
-                    {/* <a
-                        href="#"
-                        className="rounded-full bg-[#1A2312] px-5 py-2.5 text-sm font-semibold text-[#C2F800] shadow-inner shadow-[#C2F800]/5 transition-all duration-200"
-                    >
-                        Workouts
-                    </a>
-
-                    <a
-                        href="/src/app/my-plane"
-                        className="rounded-full px-5 py-2.5 text-sm font-medium text-[#8A909B] transition-colors duration-200 hover:bg-[#1A1B1F] hover:text-white"
-                    >
-                        My Plan
-                    </a> */}
                     {links}
-
                 </div>
 
                 {/* Right Section */}
@@ -53,7 +44,7 @@ function Nabbar() {
                         <span>Plan</span>
 
                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#C2F800] text-[11px] font-bold text-black shadow-sm shadow-[#C2F800]/30">
-                            1
+                            {workout.length}
                         </span>
                     </div>
 
@@ -64,7 +55,7 @@ function Nabbar() {
                         <span>Saved</span>
 
                         <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#303238] text-[11px] text-[#B5B8BF] transition-colors duration-200 group-hover:border-[#C2F800]">
-                            0
+                            {saveWorkout.length}
                         </span>
                     </div>
                 </div>
@@ -81,19 +72,7 @@ function Nabbar() {
             {/* Mobile Navigation */}
             <div className="flex border-t border-[#1E1E1E] bg-[#0C0D10] px-4 py-3 md:hidden">
                 <div className="flex w-full items-center justify-center gap-2">
-                    <a
-                        href="#"
-                        className="rounded-full bg-[#1A2312] px-5 py-2 text-sm font-semibold text-[#C2F800] shadow-inner shadow-[#C2F800]/5"
-                    >
-                        Workouts
-                    </a>
-
-                    <a
-                        href="#"
-                        className="rounded-full px-5 py-2 text-sm font-medium text-[#8A909B] transition-colors duration-200 hover:text-white"
-                    >
-                        My Plan
-                    </a>
+                    {links}
                 </div>
             </div>
         </nav>

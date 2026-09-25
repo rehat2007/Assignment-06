@@ -3,35 +3,55 @@ import Image from "next/image"
 import { useContext } from "react"
 import { WorkoutContext } from "@/context/FitLogContext"
 
-const Workoutdetail = ({workout}) => {
-    const {setWorkout , setSaveWorkout} = useContext(WorkoutContext)
+const Workoutdetail = ({ workout }) => {
+    const { setWorkout, setSaveWorkout } = useContext(WorkoutContext)
 
-    const handkeTodayWorkout = () =>{
-        setWorkout(workout)
+    const handleTodayWorkout = () => {
+        setWorkout((previousWorkouts) => {
+            const alreadyAdded = previousWorkouts.some(
+                (item) => item.id === workout.id
+            )
+
+            if (alreadyAdded) {
+                return previousWorkouts
+            }
+
+            return [...previousWorkouts, workout]
+        })
     }
 
-        const handkeSaveWorkout = () =>{
-        setSaveWorkout(workout)
+    const handleSaveWorkout = () => {
+        setSaveWorkout((previousWorkouts) => {
+            const alreadyAdded = previousWorkouts.some(
+                (item) => item.id === workout.id
+            )
+
+            if (alreadyAdded) {
+                return previousWorkouts
+            }
+
+            return [...previousWorkouts, workout]
+        })
     }
 
-  return (
-     <main className="min-h-screen bg-linear-to-b from-[#0F1115] via-[#101319] to-[#0B0D11] px-4 py-8 text-white sm:px-6 lg:px-10 lg:py-12">
-    
-                <div className="mx-auto max-w-6xl">
-    
-                    {/* Top Section: Image + Info aligned vertically */}
-                    <div className="grid gap-8 lg:grid-cols-[minmax(320px,0.9fr)_minmax(400px,1.1fr)] lg:items-start xl:gap-12">
-    
-                        {/* Workout Image */}
-                        <div className="w-full lg:sticky lg:top-8">
-                            <div className="group relative overflow-hidden rounded-3xl border border-[#242933] bg-[#15181E] shadow-2xl shadow-black/40 ring-1 ring-white/5 transition-all duration-500 hover:shadow-[#C6FF00]/10">
-                                <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                                <Image
-                                    src={workout.image}
-                                    alt="Barbell Bench Press"
-                                    width={600}
-                                    height={750}
-                                    className="
+    return (
+        <main className="min-h-screen bg-linear-to-b from-[#0F1115] via-[#101319] to-[#0B0D11] px-4 py-8 text-white sm:px-6 lg:px-10 lg:py-12">
+
+            <div className="mx-auto max-w-6xl">
+
+                {/* Top Section: Image + Info aligned vertically */}
+                <div className="grid gap-8 lg:grid-cols-[minmax(320px,0.9fr)_minmax(400px,1.1fr)] lg:items-start xl:gap-12">
+
+                    {/* Workout Image */}
+                    <div className="w-full lg:sticky lg:top-8">
+                        <div className="group relative overflow-hidden rounded-3xl border border-[#242933] bg-[#15181E] shadow-2xl shadow-black/40 ring-1 ring-white/5 transition-all duration-500 hover:shadow-[#C6FF00]/10">
+                            <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                            <Image
+                                src={workout.image}
+                                alt="Barbell Bench Press"
+                                width={600}
+                                height={750}
+                                className="
                                         h-auto
                                         max-h-162.5
                                         w-full
@@ -41,17 +61,17 @@ const Workoutdetail = ({workout}) => {
                                         ease-out
                                         group-hover:scale-110
                                     "
-                                />
-                            </div>
+                            />
                         </div>
-    
-                        {/* Workout Information */}
-                        <div className="flex flex-col">
-    
-                            {/* Title */}
-                            <div>
-                                <h1
-                                    className="
+                    </div>
+
+                    {/* Workout Information */}
+                    <div className="flex flex-col">
+
+                        {/* Title */}
+                        <div>
+                            <h1
+                                className="
                                         text-3xl
                                         font-extrabold
                                         uppercase
@@ -62,29 +82,29 @@ const Workoutdetail = ({workout}) => {
                                         sm:text-4xl
                                         lg:text-[36px]
                                     "
-                                >
-                                    {workout.name}
-                                </h1>
-    
-                                <p
-                                    className="
+                            >
+                                {workout.name}
+                            </h1>
+
+                            <p
+                                className="
                                         mt-3
                                         max-w-2xl
                                         text-sm
                                         leading-6
                                         text-[#9DA2AC]
                                     "
-                                >
-                                    {workout.description}
-                                </p>
-                            </div>
-    
-                            {/* Muscle Tags */}
-                            <div className="mt-5 flex flex-wrap gap-2">
-                                {workout.muscleGroups.map((group) => (
-                                    <span
-                                        key={group}
-                                        className="
+                            >
+                                {workout.description}
+                            </p>
+                        </div>
+
+                        {/* Muscle Tags */}
+                        <div className="mt-5 flex flex-wrap gap-2">
+                            {workout.muscleGroups.map((group) => (
+                                <span
+                                    key={group}
+                                    className="
                                             cursor-default
                                             rounded-full
                                             bg-[#B7FF00]
@@ -104,26 +124,67 @@ const Workoutdetail = ({workout}) => {
                                             hover:shadow-lg
                                             hover:shadow-[#C6FF00]/30
                                         "
-                                    >
-                                        {group}
-                                    </span>
-                                ))}
-                            </div>
-    
-                            {/* Workout Stats */}
-                            <div
-                                className="
+                                >
+                                    {group}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* Workout Stats */}
+                        <div
+                            className="
                                     mt-7
                                     grid
                                     grid-cols-1
                                     gap-3
                                     sm:grid-cols-2
                                 "
+                        >
+
+                            {/* Equipment */}
+                            <div
+                                className="
+                                        flex
+                                        min-h-16
+                                        flex-col
+                                        justify-center
+                                        gap-1
+                                        rounded-xl
+                                        border
+                                        border-[#242933]
+                                        bg-[#15181E]
+                                        px-4
+                                        py-3
+                                        shadow-md
+                                        shadow-black/10
+                                        transition-all
+                                        duration-200
+                                        hover:-translate-y-0.5
+                                        hover:border-[#C6FF00]/40
+                                        hover:bg-[#191C22]
+                                        hover:shadow-lg
+                                    "
                             >
-    
-                                {/* Equipment */}
-                                <div
+                                <span
                                     className="
+                                            text-[9px]
+                                            font-semibold
+                                            uppercase
+                                            tracking-widest
+                                            text-[#858A93]
+                                        "
+                                >
+                                    Equipment
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.equipment}
+                                </span>
+                            </div>
+
+                            {/* Difficulty */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -144,27 +205,27 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:shadow-lg
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Equipment
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.equipment}
-                                    </span>
-                                </div>
-    
-                                {/* Difficulty */}
-                                <div
-                                    className="
+                                >
+                                    Difficulty
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.difficulty}
+                                </span>
+                            </div>
+
+                            {/* Sets */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -185,27 +246,27 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:shadow-lg
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Difficulty
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.difficulty}
-                                    </span>
-                                </div>
-    
-                                {/* Sets */}
-                                <div
-                                    className="
+                                >
+                                    Sets
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.sets}
+                                </span>
+                            </div>
+
+                            {/* Reps */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -226,27 +287,27 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:shadow-lg
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Sets
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.sets}
-                                    </span>
-                                </div>
-    
-                                {/* Reps */}
-                                <div
-                                    className="
+                                >
+                                    Reps
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.reps}
+                                </span>
+                            </div>
+
+                            {/* Duration */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -267,27 +328,27 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:shadow-lg
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Reps
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.reps}
-                                    </span>
-                                </div>
-    
-                                {/* Duration */}
-                                <div
-                                    className="
+                                >
+                                    Duration
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.duration} min
+                                </span>
+                            </div>
+
+                            {/* Calories */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -308,68 +369,27 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:shadow-lg
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Duration
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.duration} min
-                                    </span>
-                                </div>
-    
-                                {/* Calories */}
-                                <div
-                                    className="
-                                        flex
-                                        min-h-16
-                                        flex-col
-                                        justify-center
-                                        gap-1
-                                        rounded-xl
-                                        border
-                                        border-[#242933]
-                                        bg-[#15181E]
-                                        px-4
-                                        py-3
-                                        shadow-md
-                                        shadow-black/10
-                                        transition-all
-                                        duration-200
-                                        hover:-translate-y-0.5
-                                        hover:border-[#C6FF00]/40
-                                        hover:bg-[#191C22]
-                                        hover:shadow-lg
-                                    "
                                 >
-                                    <span
-                                        className="
-                                            text-[9px]
-                                            font-semibold
-                                            uppercase
-                                            tracking-widest
-                                            text-[#858A93]
-                                        "
-                                    >
-                                        Calories
-                                    </span>
-    
-                                    <span className="text-sm font-medium text-[#E4E6E9]">
-                                        {workout.caloriesBurned} kcal
-                                    </span>
-                                </div>
-    
-                                {/* Rating */}
-                                <div
-                                    className="
+                                    Calories
+                                </span>
+
+                                <span className="text-sm font-medium text-[#E4E6E9]">
+                                    {workout.caloriesBurned} kcal
+                                </span>
+                            </div>
+
+                            {/* Rating */}
+                            <div
+                                className="
                                         flex
                                         min-h-16
                                         flex-col
@@ -392,28 +412,28 @@ const Workoutdetail = ({workout}) => {
                                         hover:shadow-lg
                                         sm:col-span-2
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             text-[9px]
                                             font-semibold
                                             uppercase
                                             tracking-widest
                                             text-[#858A93]
                                         "
-                                    >
-                                        Rating
-                                    </span>
-    
-                                    <span className="text-sm font-semibold text-[#C6FF00]">
-                                        {workout.rating}
-                                    </span>
-                                </div>
-    
-                                {/* Add to plan button (placed with stat cards) */}
-                                <button
-                                    onClick={handkeTodayWorkout}
-                                    className="
+                                >
+                                    Rating
+                                </span>
+
+                                <span className="text-sm font-semibold text-[#C6FF00]">
+                                    {workout.rating}
+                                </span>
+                            </div>
+
+                            {/* Add to plan button (placed with stat cards) */}
+                            <button
+                                onClick={handleTodayWorkout}
+                                className="
                                         inline-flex
                                         min-h-16
                                         items-center
@@ -438,14 +458,14 @@ const Workoutdetail = ({workout}) => {
                                         hover:shadow-[#C6FF00]/30
                                         active:scale-[0.97]
                                     "
-                                >
-                                    ▣ &nbsp; Add to todays plan
-                                </button>
-    
-                                {/* Save for later button (placed with stat cards) */}
-                                <button
-                                    onClick={handkeSaveWorkout}
-                                    className="
+                            >
+                                ▣ &nbsp; Add to todays plan
+                            </button>
+
+                            {/* Save for later button (placed with stat cards) */}
+                            <button
+                                onClick={handleSaveWorkout}
+                                className="
                                         inline-flex
                                         min-h-16
                                         items-center
@@ -472,20 +492,20 @@ const Workoutdetail = ({workout}) => {
                                         hover:text-[#C6FF00]
                                         active:scale-[0.97]
                                     "
-                                >
-                                    ♧ &nbsp; Save for later
-                                </button>
-    
-                            </div>
-    
+                            >
+                                ♧ &nbsp; Save for later
+                            </button>
+
                         </div>
+
                     </div>
-    
-                    {/* Instructions Section: full width at the bottom */}
-                    <div className="mt-10 lg:mt-14">
-    
-                        <h2
-                            className="
+                </div>
+
+                {/* Instructions Section: full width at the bottom */}
+                <div className="mt-10 lg:mt-14">
+
+                    <h2
+                        className="
                                 flex
                                 items-center
                                 gap-2
@@ -495,13 +515,13 @@ const Workoutdetail = ({workout}) => {
                                 tracking-widest
                                 text-white
                             "
-                        >
-                            <span className="h-4 w-1 rounded-full bg-[#C6FF00]" />
-                            Instructions
-                        </h2>
-    
-                        <ol
-                            className="
+                    >
+                        <span className="h-4 w-1 rounded-full bg-[#C6FF00]" />
+                        Instructions
+                    </h2>
+
+                    <ol
+                        className="
                                 mt-4
                                 grid
                                 grid-cols-1
@@ -511,11 +531,11 @@ const Workoutdetail = ({workout}) => {
                                 sm:grid-cols-2
                                 lg:grid-cols-3
                             "
-                        >
-                            {workout.instructions.map((instruction, index) => (
-                                <li
-                                    key={instruction}
-                                    className="
+                    >
+                        {workout.instructions.map((instruction, index) => (
+                            <li
+                                key={instruction}
+                                className="
                                         flex
                                         items-start
                                         gap-3
@@ -535,9 +555,9 @@ const Workoutdetail = ({workout}) => {
                                         hover:bg-[#191C22]
                                         hover:text-white
                                     "
-                                >
-                                    <span
-                                        className="
+                            >
+                                <span
+                                    className="
                                             flex
                                             h-5
                                             w-5
@@ -550,19 +570,19 @@ const Workoutdetail = ({workout}) => {
                                             font-extrabold
                                             text-black
                                         "
-                                    >
-                                        {index + 1}
-                                    </span>
-                                    <span>{instruction}</span>
-                                </li>
-                            ))}
-                        </ol>
-    
-                    </div>
-    
+                                >
+                                    {index + 1}
+                                </span>
+                                <span>{instruction}</span>
+                            </li>
+                        ))}
+                    </ol>
+
                 </div>
-            </main>
-  )
+
+            </div>
+        </main>
+    )
 }
 
 export default Workoutdetail

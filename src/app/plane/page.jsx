@@ -1,3 +1,4 @@
+"use client"
 import MyPlane from './MyPlane'
 
 const Page = () => {
