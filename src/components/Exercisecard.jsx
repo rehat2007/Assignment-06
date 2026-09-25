@@ -1,6 +1,12 @@
 import Image from "next/image";
+import Link from 'next/link'
 
-const Exercisecard = ({exercise}) => {
+const Exercisecard = ({exercise , newWorkouts}) => {
+
+    const deletworkout = ()=>{
+        newWorkouts(exercise.id)
+    }
+
   return (
      <div
       className="
@@ -83,7 +89,7 @@ const Exercisecard = ({exercise}) => {
               sm:flex-none
             "
           >
-            View Details
+            <Link href={`/workouts/${exercise.id}`}>View Details</Link>
           </button>
 
           {/* Mark done */}
@@ -108,6 +114,7 @@ const Exercisecard = ({exercise}) => {
 
           {/* Remove */}
           <button
+          onClick={deletworkout}
             className="
               hidden
               h-8

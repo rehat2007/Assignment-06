@@ -1,14 +1,27 @@
-"use client";
+"use client"
 import Image from "next/image"
 import { useContext } from "react"
 import { WorkoutContext } from '@/context/FitLogContext'
 import Exercisecard from "@/components/Exercisecard";
+import EmptyState from "@/components/EmptyState";
 
 export default function MyPlan() {
-  const {workout, saveWorkout} = useContext(WorkoutContext)
+  const {workout, setWorkout, saveWorkout, setSaveWorkout } = useContext(WorkoutContext)
   
   const totalDurationForTodaysPlan = workout.reduce((total,workout)=>{return total + workout.duration},0)
   const totalCaloriesForTodaysPlan = workout.reduce((total,workout)=>{return total + workout.caloriesBurned},0)
+
+  const handletodaysplane = () =>{
+    return workout.map((item)=> <Exercisecard key={item.id} exercise={item} newWorkouts = {newWorkout} />)
+  }
+
+  const handlesavedplane = () =>{
+     return saveWorkout.map((item)=> <Exercisecard key={item.id} exercise={item} newWorkouts = {newWorkout} />)
+  }
+
+  const newWorkout = (id) =>{    
+   setWorkout((prevWorkouts)=>prevWorkouts.filter((workout) => workout.id !== id))
+  }
 
   return (
     <main className="min-h-screen bg-[#0d0f13] px-4 py-8 text-white sm:px-6 lg:px-9">
@@ -70,6 +83,7 @@ export default function MyPlan() {
           <div className="flex w-fit rounded-lg border border-[#262c36] bg-[#151820] p-1">
 
             <button
+            onClick={handletodaysplane}
               className="
                 rounded-md
                 bg-[#242a35]
@@ -85,6 +99,7 @@ export default function MyPlan() {
             </button>
 
             <button
+            onClick={handlesavedplane}
               className="
                 rounded-md
                 px-4
@@ -133,9 +148,8 @@ export default function MyPlan() {
 
         {/* ================= EXERCISE LIST ================= */}
         <section className="mt-5 space-y-3">
-         
-         {workout.map((item)=> <Exercisecard key={item.id} exercise={item} />)}
-         
+
+       {(workout.length < 1)? <EmptyState/> : }
 
         </section>
 

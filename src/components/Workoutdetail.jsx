@@ -1,10 +1,12 @@
 "use client"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import { WorkoutContext } from "@/context/FitLogContext"
 
 const Workoutdetail = ({ workout }) => {
     const { setWorkout, setSaveWorkout } = useContext(WorkoutContext)
+    const router = useRouter()
 
     const handleTodayWorkout = () => {
         setWorkout((previousWorkouts) => {
@@ -18,6 +20,7 @@ const Workoutdetail = ({ workout }) => {
 
             return [...previousWorkouts, workout]
         })
+        router.push("/")
     }
 
     const handleSaveWorkout = () => {
