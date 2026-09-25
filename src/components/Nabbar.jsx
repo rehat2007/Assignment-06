@@ -1,7 +1,15 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+
 
 function Nabbar() {
+
+    const links = <>
+        <p className="rounded-full bg-[#1A2312] px-5 py-2.5 text-sm font-semibold text-[#C2F800] shadow-inner shadow-[#C2F800]/5 transition-all duration-200"><Link href="/">Home</Link></p>
+        <p className="rounded-full px-5 py-2.5 text-sm font-medium text-[#8A909B] transition-colors duration-200 hover:bg-[#1A1B1F] hover:text-white"><Link href="/plane">My Plan</Link></p>
+    </>
+
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-[#1E1E1E] bg-[#0C0D10]/90 backdrop-blur-md">
             <div className="mx-auto flex h-18 max-w-350 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -21,7 +29,7 @@ function Nabbar() {
 
                 {/* Center Navigation */}
                 <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full  p-1 md:flex">
-                    <a
+                    {/* <a
                         href="#"
                         className="rounded-full bg-[#1A2312] px-5 py-2.5 text-sm font-semibold text-[#C2F800] shadow-inner shadow-[#C2F800]/5 transition-all duration-200"
                     >
@@ -29,11 +37,13 @@ function Nabbar() {
                     </a>
 
                     <a
-                        href="#"
+                        href="/src/app/my-plane"
                         className="rounded-full px-5 py-2.5 text-sm font-medium text-[#8A909B] transition-colors duration-200 hover:bg-[#1A1B1F] hover:text-white"
                     >
                         My Plan
-                    </a>
+                    </a> */}
+                    {links}
+
                 </div>
 
                 {/* Right Section */}
