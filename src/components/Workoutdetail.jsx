@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import { WorkoutContext } from "@/context/FitLogContext"
+import { toast } from "react-toastify"
 
 const Workoutdetail = ({ workout }) => {
     const { setWorkout, setSaveWorkout } = useContext(WorkoutContext)
@@ -17,9 +18,11 @@ const Workoutdetail = ({ workout }) => {
             if (alreadyAdded) {
                 return previousWorkouts
             }
-
+            
+            
             return [...previousWorkouts, workout]
         })
+        toast.success("Workout added to today's plan")
         router.push("/")
     }
 
@@ -30,11 +33,15 @@ const Workoutdetail = ({ workout }) => {
             )
 
             if (alreadyAdded) {
+                toast.info("This workout is already in saved workouts")
                 return previousWorkouts
             }
-
+            
+            toast.success("Workout added to saved workouts")
             return [...previousWorkouts, workout]
         })
+        
+        router.push("/")
     }
 
     return (

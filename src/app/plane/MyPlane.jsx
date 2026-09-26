@@ -1,27 +1,38 @@
 "use client"
 import Image from "next/image"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { WorkoutContext } from '@/context/FitLogContext'
-import Exercisecard from "@/components/Exercisecard";
-import EmptyState from "@/components/EmptyState";
+import Exercisecard from "@/components/Exercisecard"
+import { toast } from "react-toastify"
+import EmptyState from "@/components/EmptyState"
 
 export default function MyPlan() {
-  const {workout, setWorkout, saveWorkout, setSaveWorkout } = useContext(WorkoutContext)
+  const { workout, setWorkout, saveWorkout, setSaveWorkout } = useContext(WorkoutContext)
+
+  const totalDurationForTodaysPlan = workout.reduce((total, workout) => { return total + workout.duration }, 0)
+  const totalCaloriesForTodaysPlan = workout.reduce((total, workout) => { return total + workout.caloriesBurned }, 0)
+
+  const totalDuratuinForSavePlane = saveWorkout.reduce((total, workouts) => { return total + workouts.duration }, 0)
+  const totalCaloriesForsavePlan = saveWorkout.reduce((total, workouts) => { return total + workouts.caloriesBurned }, 0)
+
+  const [workoutData, setWorkoutData] = useState("todatsPlane")
+  const [sortBy, setSortBy] = useState(" ")
+
+  const data = workoutData === "todatsPlane" ? workout : saveWorkout
+
+  const newWorkout = (id) => {
+    workoutData === "todatsPlane"
+      ? setWorkout((prevWorkouts) => prevWorkouts.filter((workout) => workout.id !== id))
+      : setSaveWorkout((prevWorkouts) => prevWorkouts.filter((workout) => workout.id !== id))
+    toast.success("Workout removed successfully")
+  }
   
-  const totalDurationForTodaysPlan = workout.reduce((total,workout)=>{return total + workout.duration},0)
-  const totalCaloriesForTodaysPlan = workout.reduce((total,workout)=>{return total + workout.caloriesBurned},0)
+  const sortedWorkouts = [...data].sort((a,b) =>{
+    if (sortBy === "duration") return a.duration - b.duration
+    if (sortBy === "calories") return a.caloriesBurned - b.caloriesBurned
+    if (sortBy === "rating") return b.rating - a.rating
+  })
 
-  const handletodaysplane = () =>{
-    return workout.map((item)=> <Exercisecard key={item.id} exercise={item} newWorkouts = {newWorkout} />)
-  }
-
-  const handlesavedplane = () =>{
-     return saveWorkout.map((item)=> <Exercisecard key={item.id} exercise={item} newWorkouts = {newWorkout} />)
-  }
-
-  const newWorkout = (id) =>{    
-   setWorkout((prevWorkouts)=>prevWorkouts.filter((workout) => workout.id !== id))
-  }
 
   return (
     <main className="min-h-screen bg-[#0d0f13] px-4 py-8 text-white sm:px-6 lg:px-9">
@@ -48,7 +59,7 @@ export default function MyPlan() {
             </p>
 
             <p className="mt-1 text-[31px] font-bold leading-none text-[#baff00]">
-              {workout.length}
+              {workoutData === "todatsPlane" ? workout.length : saveWorkout.length}
             </p>
           </div>
 
@@ -59,7 +70,7 @@ export default function MyPlan() {
             </p>
 
             <p className="mt-1 text-[31px] font-bold leading-none">
-              {totalDurationForTodaysPlan}
+              {workoutData === "todatsPlane" ? totalDurationForTodaysPlan : totalDuratuinForSavePlane}
             </p>
           </div>
 
@@ -70,7 +81,7 @@ export default function MyPlan() {
             </p>
 
             <p className="mt-1 text-[31px] font-bold leading-none">
-              {totalCaloriesForTodaysPlan}
+              {workoutData === "todatsPlane" ? totalCaloriesForTodaysPlan : totalCaloriesForsavePlan}
             </p>
           </div>
 
@@ -83,32 +94,23 @@ export default function MyPlan() {
           <div className="flex w-fit rounded-lg border border-[#262c36] bg-[#151820] p-1">
 
             <button
-            onClick={handletodaysplane}
-              className="
-                rounded-md
-                bg-[#242a35]
-                px-4
-                py-2
-                text-[11px]
-                font-medium
-                text-white
-                shadow-sm
-              "
+              onClick={() => setWorkoutData("todatsPlane")}
+              className={workoutData === "todatsPlane"
+                ? "flex items-center gap-2 rounded-md border border-[#292f39] bg-[#14171d] px-3 py-2 text-[10px] text-white"
+                : "rounded-md px-4  py-2  text-[11px]  text-[#7d818b] transition hover:text-white"
+
+              }
             >
               Todays Plan
             </button>
 
             <button
-            onClick={handlesavedplane}
-              className="
-                rounded-md
-                px-4
-                py-2
-                text-[11px]
-                text-[#7d818b]
-                transition
-                hover:text-white
-              "
+              onClick={() => setWorkoutData("savedPlane")}
+              className={workoutData === "savedPlane"
+                ? "flex items-center gap-2 rounded-md border border-[#292f39] bg-[#14171d] px-3 py-2 text-[10px] text-white"
+                : "rounded-md px-4  py-2  text-[11px]  text-[#7d818b] transition hover:text-white"
+
+              }
             >
               Saved
             </button>
@@ -117,31 +119,15 @@ export default function MyPlan() {
 
           {/* Sort */}
           <div className="flex items-center gap-2 self-end sm:self-auto">
-            <span className="text-[10px] text-[#858994]">
-              Sort By
-            </span>
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-md
-                border
-                border-[#292f39]
-                bg-[#14171d]
-                px-3
-                py-2
-                text-[10px]
-                text-white
-              "
-            >
-              Duration
-
-              <span className="text-[#858994]">
-                ↓
-              </span>
-            </button>
+            <select
+              className=" w-25 rounded-md border border-[#2B3038] bg-[#15181E] px-3 py-3.5 text-[10px] text-zinc-300  outline-none  cursor-pointer  focus:border-[#3A404A]"
+              onChange={(e) => setSortBy(e.target.value)}
+              >
+               <option value="">Sort by</option>
+              <option value={"duration"} >Duration</option>
+              <option value={"calories"} >Calories</option>
+              <option value={"rating"} >Rating</option>
+            </select>
           </div>
 
         </section>
@@ -149,7 +135,7 @@ export default function MyPlan() {
         {/* ================= EXERCISE LIST ================= */}
         <section className="mt-5 space-y-3">
 
-       {(workout.length < 1)? <EmptyState/> : }
+          {(data.length < 1) ? <EmptyState /> : sortedWorkouts.map((item) => <Exercisecard key={item.id} exercise={item} newWorkouts={newWorkout} />)}
 
         </section>
 

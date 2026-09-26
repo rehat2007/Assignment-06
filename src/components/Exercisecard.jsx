@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 import Link from 'next/link'
 
 const Exercisecard = ({exercise , newWorkouts}) => {
@@ -56,7 +56,7 @@ const Exercisecard = ({exercise , newWorkouts}) => {
             {/* Calories */}
             <span className="flex items-center gap-1 text-[10px] text-[#b9bdc5]">
               <span className="text-[#baff00]">♨</span>
-              {exercise.calories}
+              {exercise.caloriesBurned}
             </span>
 
             {/* Rating */}
